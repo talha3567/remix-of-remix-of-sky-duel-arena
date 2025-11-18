@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -15,14 +16,6 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMobileMenuOpen(false);
-    }
-  };
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -34,52 +27,58 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <button
-            onClick={() => scrollToSection("hero")}
+          <Link
+            to="/"
             className="text-2xl font-bold hover:opacity-80 transition-opacity"
           >
             <span className="text-primary">SMP</span>
             <span className="text-foreground">PRACTICE</span>
-          </button>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => scrollToSection("hero")}
+            <Link
+              to="/"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               Anasayfa
-            </button>
-            <button
-              onClick={() => scrollToSection("features")}
+            </Link>
+            <Link
+              to="/features"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               Özellikler
-            </button>
-            <button
-              onClick={() => scrollToSection("kits")}
+            </Link>
+            <Link
+              to="/kits"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               Kitler
-            </button>
-            <button
-              onClick={() => scrollToSection("stats")}
+            </Link>
+            <Link
+              to="/arenas"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Arenalar
+            </Link>
+            <Link
+              to="/stats"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               İstatistikler
-            </button>
-            <button
-              onClick={() => scrollToSection("commands")}
+            </Link>
+            <Link
+              to="/commands"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               Komutlar
-            </button>
-            <button
-              onClick={() => scrollToSection("staff")}
+            </Link>
+            <Link
+              to="/staff"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               Yetkililer
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -100,42 +99,55 @@ export const Navbar = () => {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-3 animate-fade-in">
-            <button
-              onClick={() => scrollToSection("hero")}
+            <Link
+              to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               Anasayfa
-            </button>
-            <button
-              onClick={() => scrollToSection("features")}
+            </Link>
+            <Link
+              to="/features"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               Özellikler
-            </button>
-            <button
-              onClick={() => scrollToSection("kits")}
+            </Link>
+            <Link
+              to="/kits"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               Kitler
-            </button>
-            <button
-              onClick={() => scrollToSection("stats")}
+            </Link>
+            <Link
+              to="/arenas"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
+            >
+              Arenalar
+            </Link>
+            <Link
+              to="/stats"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               İstatistikler
-            </button>
-            <button
-              onClick={() => scrollToSection("commands")}
+            </Link>
+            <Link
+              to="/commands"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               Komutlar
-            </button>
-            <button
-              onClick={() => scrollToSection("staff")}
+            </Link>
+            <Link
+              to="/staff"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               Yetkililer
-            </button>
+            </Link>
           </div>
         )}
       </div>
