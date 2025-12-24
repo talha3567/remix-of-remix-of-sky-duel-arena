@@ -79,6 +79,18 @@ export const Navbar = () => {
             >
               İstatistikler
             </Link>
+            <Link
+              to="/duels"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Düellolar
+            </Link>
+            <Link
+              to="/players"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Oyuncular
+            </Link>
             
             {user ? (
               <Link to="/profile">
@@ -133,6 +145,20 @@ export const Navbar = () => {
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               İstatistikler
+            </Link>
+            <Link
+              to="/duels"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
+            >
+              Düellolar
+            </Link>
+            <Link
+              to="/players"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
+            >
+              Oyuncular
             </Link>
             
             {user ? (

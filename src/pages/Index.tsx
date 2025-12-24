@@ -1,14 +1,11 @@
 import { StarField } from "@/components/StarField";
 import { Navbar } from "@/components/Navbar";
 import { DiscordWidget } from "@/components/DiscordWidget";
+import { ServerStatus } from "@/components/ServerStatus";
 import { Badge } from "@/components/ui/badge";
 import heroImage from "@/assets/hero-bg.jpg";
 
 const Index = () => {
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       <StarField />
@@ -38,25 +35,13 @@ const Index = () => {
             Türkiye'de olmayan özelliklerle dolu, profesyonel duel sistemi ve eşsiz arenalarla PVP deneyimini zirveye taşıyoruz.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-            <div className="bg-card border-2 border-primary/30 rounded-xl px-8 py-4 shadow-glow-cyan">
-              <p className="text-sm text-muted-foreground mb-1">Sunucu IP</p>
-              <p 
-                className="text-2xl font-bold text-primary cursor-pointer hover:text-primary/80 transition-colors"
-                onClick={() => copyToClipboard("smppractice.net")}
-              >
-                smppractice.net
-              </p>
-            </div>
-            
-            <div className="bg-card border border-border rounded-xl px-6 py-4">
-              <p className="text-sm text-muted-foreground mb-1">Sürüm</p>
-              <p className="text-xl font-semibold">1.17 - 1.21.7</p>
-            </div>
+          {/* Server Status */}
+          <div className="max-w-lg mx-auto mt-8">
+            <ServerStatus serverAddress="smppractice.net" />
           </div>
 
           {/* Discord Widget */}
-          <div className="max-w-md mx-auto mt-12">
+          <div className="max-w-md mx-auto mt-8">
             <DiscordWidget />
           </div>
         </div>

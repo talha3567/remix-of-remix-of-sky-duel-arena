@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      duels: {
+        Row: {
+          arena: string | null
+          created_at: string
+          duration_seconds: number | null
+          id: string
+          player1_id: string
+          player1_kills: number
+          player2_id: string
+          player2_kills: number
+          winner_id: string | null
+        }
+        Insert: {
+          arena?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          player1_id: string
+          player1_kills?: number
+          player2_id: string
+          player2_kills?: number
+          winner_id?: string | null
+        }
+        Update: {
+          arena?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          player1_id?: string
+          player1_kills?: number
+          player2_id?: string
+          player2_kills?: number
+          winner_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

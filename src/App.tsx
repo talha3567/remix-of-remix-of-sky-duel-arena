@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Stats from "./pages/Stats";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import DuelHistory from "./pages/DuelHistory";
+import Players from "./pages/Players";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/stats" element={<Stats />} />
+            <Route path="/duels" element={<DuelHistory />} />
+            <Route path="/players" element={<Players />} />
+            <Route path="/players/:userId" element={<Players />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
