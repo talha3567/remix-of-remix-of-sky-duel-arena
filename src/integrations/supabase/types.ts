@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          best_win_streak: number
+          created_at: string
+          id: string
+          total_deaths: number
+          total_duels: number
+          total_kills: number
+          total_wins: number
+          updated_at: string
+          user_id: string
+          username: string | null
+          win_streak: number
+        }
+        Insert: {
+          avatar_url?: string | null
+          best_win_streak?: number
+          created_at?: string
+          id?: string
+          total_deaths?: number
+          total_duels?: number
+          total_kills?: number
+          total_wins?: number
+          updated_at?: string
+          user_id: string
+          username?: string | null
+          win_streak?: number
+        }
+        Update: {
+          avatar_url?: string | null
+          best_win_streak?: number
+          created_at?: string
+          id?: string
+          total_deaths?: number
+          total_duels?: number
+          total_kills?: number
+          total_wins?: number
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+          win_streak?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

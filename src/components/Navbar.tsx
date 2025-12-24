@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +21,30 @@ export const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchProfile();
+    } else {
+      setAvatarUrl(null);
+      setUsername(null);
+    }
+  }, [user]);
+
+  const fetchProfile = async () => {
+    if (!user) return;
+    
+    const { data } = await supabase
+      .from("profiles")
+      .select("avatar_url, username")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (data) {
+      setAvatarUrl(data.avatar_url);
+      setUsername(data.username);
+    }
+  };
 
   return (
     <nav
@@ -44,41 +74,32 @@ export const Navbar = () => {
               Anasayfa
             </Link>
             <Link
-              to="/features"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Özellikler
-            </Link>
-            <Link
-              to="/kits"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Kitler
-            </Link>
-            <Link
-              to="/arenas"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Arenalar
-            </Link>
-            <Link
               to="/stats"
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               İstatistikler
             </Link>
-            <Link
-              to="/commands"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Komutlar
-            </Link>
-            <Link
-              to="/staff"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Yetkililer
-            </Link>
+            
+            {user ? (
+              <Link to="/profile">
+                <div className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                  <Avatar className="w-8 h-8 border border-primary/50">
+                    <AvatarImage src={avatarUrl || undefined} />
+                    <AvatarFallback className="bg-primary/20 text-primary text-sm">
+                      {username?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-primary font-medium">{username || "Profil"}</span>
+                </div>
+              </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Giriş Yap
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -107,47 +128,37 @@ export const Navbar = () => {
               Anasayfa
             </Link>
             <Link
-              to="/features"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Özellikler
-            </Link>
-            <Link
-              to="/kits"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Kitler
-            </Link>
-            <Link
-              to="/arenas"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Arenalar
-            </Link>
-            <Link
               to="/stats"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
             >
               İstatistikler
             </Link>
-            <Link
-              to="/commands"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Komutlar
-            </Link>
-            <Link
-              to="/staff"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Yetkililer
-            </Link>
+            
+            {user ? (
+              <Link
+                to="/profile"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2 w-full text-left px-4 py-2 text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
+              >
+                <Avatar className="w-6 h-6 border border-primary/50">
+                  <AvatarImage src={avatarUrl || undefined} />
+                  <AvatarFallback className="bg-primary/20 text-primary text-xs">
+                    {username?.charAt(0).toUpperCase() || "?"}
+                  </AvatarFallback>
+                </Avatar>
+                {username || "Profil"}
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block w-full text-left px-4 py-2 text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
+              >
+                <LogIn className="w-4 h-4 inline mr-2" />
+                Giriş Yap
+              </Link>
+            )}
           </div>
         )}
       </div>
