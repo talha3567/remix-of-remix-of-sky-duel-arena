@@ -46,69 +46,59 @@ export const Navbar = () => {
     }
   };
 
+  const navLinks = [
+    { to: "/", label: "Anasayfa" },
+    { to: "/duels", label: "Düellolar" },
+    { to: "/players", label: "Oyuncular" },
+  ];
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-lg border-b border-border/50 shadow-lg"
+          ? "glass-card border-b border-border/20"
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold hover:opacity-80 transition-opacity"
+            className="text-xl font-bold tracking-tight hover:opacity-80 transition-opacity"
           >
-            <span className="text-primary">SMP</span>
-            <span className="text-foreground">PRACTICE</span>
+            SMPPRAC
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <Link
-              to="/"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Anasayfa
-            </Link>
-            <Link
-              to="/stats"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              İstatistikler
-            </Link>
-            <Link
-              to="/duels"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Düellolar
-            </Link>
-            <Link
-              to="/players"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Oyuncular
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
+              >
+                {link.label}
+              </Link>
+            ))}
             
             {user ? (
               <Link to="/profile">
                 <div className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                  <Avatar className="w-8 h-8 border border-primary/50">
+                  <Avatar className="w-8 h-8 border border-border/50">
                     <AvatarImage src={avatarUrl || undefined} />
-                    <AvatarFallback className="bg-primary/20 text-primary text-sm">
+                    <AvatarFallback className="bg-secondary text-foreground text-sm">
                       {username?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-primary font-medium">{username || "Profil"}</span>
+                  <span className="text-sm font-medium">{username || "Profil"}</span>
                 </div>
               </Link>
             ) : (
               <Link to="/auth">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                <Button variant="outline" size="sm" className="border-border/50 hover:bg-secondary">
                   <LogIn className="w-4 h-4 mr-2" />
-                  Giriş Yap
+                  Giriş
                 </Button>
               </Link>
             )}
@@ -122,54 +112,36 @@ export const Navbar = () => {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-primary" />
+              <X className="w-5 h-5" />
             ) : (
-              <Menu className="w-6 h-6 text-primary" />
+              <Menu className="w-5 h-5" />
             )}
           </Button>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-3 animate-fade-in">
-            <Link
-              to="/"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Anasayfa
-            </Link>
-            <Link
-              to="/stats"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              İstatistikler
-            </Link>
-            <Link
-              to="/duels"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Düellolar
-            </Link>
-            <Link
-              to="/players"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-left px-4 py-2 text-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
-            >
-              Oyuncular
-            </Link>
+          <div className="md:hidden mt-4 pb-4 space-y-2 animate-fade-in">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-lg transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
             
             {user ? (
               <Link
                 to="/profile"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 w-full text-left px-4 py-2 text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
+                className="flex items-center gap-2 w-full text-left px-4 py-3 text-foreground hover:bg-secondary/50 rounded-lg transition-colors"
               >
-                <Avatar className="w-6 h-6 border border-primary/50">
+                <Avatar className="w-6 h-6 border border-border/50">
                   <AvatarImage src={avatarUrl || undefined} />
-                  <AvatarFallback className="bg-primary/20 text-primary text-xs">
+                  <AvatarFallback className="bg-secondary text-foreground text-xs">
                     {username?.charAt(0).toUpperCase() || "?"}
                   </AvatarFallback>
                 </Avatar>
@@ -179,7 +151,7 @@ export const Navbar = () => {
               <Link
                 to="/auth"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block w-full text-left px-4 py-2 text-primary hover:bg-secondary/50 rounded-lg transition-colors font-medium"
+                className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-lg transition-colors"
               >
                 <LogIn className="w-4 h-4 inline mr-2" />
                 Giriş Yap

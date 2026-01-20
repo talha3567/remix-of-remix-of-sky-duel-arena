@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { Swords, Trophy, Clock, MapPin } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { MinecraftAvatar } from "@/components/MinecraftAvatar";
 
 interface DuelWithProfiles {
@@ -33,7 +32,6 @@ const DuelHistory = () => {
   useEffect(() => {
     fetchDuels();
 
-    // Subscribe to realtime updates
     const channel = supabase
       .channel('duels-changes')
       .on(
@@ -66,7 +64,6 @@ const DuelHistory = () => {
       return;
     }
 
-    // Fetch profiles for all unique player IDs
     const playerIds = [...new Set(duelsData.flatMap(d => [d.player1_id, d.player2_id]))];
     
     const { data: profiles } = await supabase
@@ -116,24 +113,24 @@ const DuelHistory = () => {
   }) => (
     <Link 
       to={`/players/${playerId}`}
-      className={`flex items-center gap-3 p-3 rounded-lg transition-all hover:scale-105 ${
+      className={`flex items-center gap-3 p-3 rounded-lg transition-all hover-glow ${
         isWinner 
-          ? "bg-primary/20 border border-primary/40" 
-          : "bg-secondary/50 border border-border/50"
+          ? "glass-card border border-green-500/20" 
+          : "glass-card"
       }`}
     >
       <MinecraftAvatar username={profile?.username || null} size="md" />
       <div className="flex-1 min-w-0">
-        <p className="font-semibold text-foreground truncate">
+        <p className="font-medium text-foreground truncate">
           {profile?.username || "Bilinmeyen Oyuncu"}
         </p>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">{kills} kill</span>
           {isWinner && (
-            <Badge variant="outline" className="bg-primary/20 text-primary border-primary/40 text-xs">
-              <Trophy className="w-3 h-3 mr-1" />
+            <span className="text-xs text-green-500 flex items-center gap-1">
+              <Trophy className="w-3 h-3" />
               Kazandı
-            </Badge>
+            </span>
           )}
         </div>
       </div>
@@ -147,12 +144,9 @@ const DuelHistory = () => {
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-              <Swords className="w-8 h-8 text-primary" />
-            </div>
-            <h1 className="text-4xl font-bold text-foreground mb-2">
-              Düello <span className="text-primary">Geçmişi</span>
+          <div className="text-center mb-16 fade-in">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-3">
+              Düellolar
             </h1>
             <p className="text-muted-foreground">
               Son düellolar ve sonuçları
@@ -163,43 +157,44 @@ const DuelHistory = () => {
           {loading ? (
             <div className="space-y-4">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-32 bg-card/50 rounded-xl animate-pulse" />
+                <div key={i} className="h-32 glass-card rounded-lg animate-pulse" />
               ))}
             </div>
           ) : duels.length === 0 ? (
-            <div className="text-center py-16 bg-card/30 rounded-xl border border-border/50">
-              <Swords className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">Henüz düello yok</h3>
-              <p className="text-muted-foreground">
+            <div className="text-center py-20 glass-card rounded-lg fade-in">
+              <Swords className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-foreground mb-2">Henüz düello yok</h3>
+              <p className="text-muted-foreground text-sm">
                 Sunucuya bağlanarak düello yapabilirsiniz
               </p>
             </div>
           ) : (
             <div className="space-y-4">
-              {duels.map((duel) => (
+              {duels.map((duel, index) => (
                 <div
                   key={duel.id}
-                  className="bg-card/50 border border-border/50 rounded-xl p-4 hover:border-primary/30 transition-all"
+                  className={`glass-card rounded-lg p-5 hover-glow fade-in`}
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   {/* Match Info */}
                   <div className="flex items-center justify-between mb-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-4">
                       {duel.arena && (
                         <span className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
+                          <MapPin className="w-3 h-3" />
                           {duel.arena}
                         </span>
                       )}
                       <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
+                        <Clock className="w-3 h-3" />
                         {formatDuration(duel.duration_seconds)}
                       </span>
                     </div>
-                    <span>{formatDate(duel.created_at)}</span>
+                    <span className="text-xs">{formatDate(duel.created_at)}</span>
                   </div>
 
                   {/* Players */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] gap-4 items-center">
                     <PlayerCard
                       profile={duel.player1_profile}
                       kills={duel.player1_kills}
@@ -207,8 +202,17 @@ const DuelHistory = () => {
                       playerId={duel.player1_id}
                     />
                     
-                    <div className="hidden md:flex items-center justify-center">
-                      <span className="text-2xl font-bold text-primary">VS</span>
+                    <div className="hidden md:flex flex-col items-center">
+                      <span className="text-xl font-bold text-muted-foreground">VS</span>
+                      <span className="text-2xl font-bold mt-1">
+                        <span className={duel.winner_id === duel.player1_id ? "text-foreground" : "text-muted-foreground"}>
+                          {duel.player1_kills}
+                        </span>
+                        <span className="text-muted-foreground mx-2">-</span>
+                        <span className={duel.winner_id === duel.player2_id ? "text-foreground" : "text-muted-foreground"}>
+                          {duel.player2_kills}
+                        </span>
+                      </span>
                     </div>
                     
                     <PlayerCard
@@ -217,17 +221,6 @@ const DuelHistory = () => {
                       isWinner={duel.winner_id === duel.player2_id}
                       playerId={duel.player2_id}
                     />
-                  </div>
-
-                  {/* Score */}
-                  <div className="mt-4 flex items-center justify-center gap-4 text-2xl font-bold">
-                    <span className={duel.winner_id === duel.player1_id ? "text-primary" : "text-muted-foreground"}>
-                      {duel.player1_kills}
-                    </span>
-                    <span className="text-muted-foreground">-</span>
-                    <span className={duel.winner_id === duel.player2_id ? "text-primary" : "text-muted-foreground"}>
-                      {duel.player2_kills}
-                    </span>
                   </div>
                 </div>
               ))}

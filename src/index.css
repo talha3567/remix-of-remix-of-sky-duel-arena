@@ -1,51 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Jumpreset-style Modern Dark Theme */
 
 @layer base {
   :root {
-    --background: 220 25% 10%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
-    --card: 220 20% 14%;
+    --card: 0 0% 4%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 220 20% 14%;
+    --popover: 0 0% 4%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 187 85% 70%;
-    --primary-foreground: 220 25% 10%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 220 15% 20%;
+    --secondary: 0 0% 8%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 220 15% 25%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 187 85% 70%;
-    --accent-foreground: 220 25% 10%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 187 85% 70%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 0 0% 100%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --admin-red: 0 75% 35%;
-    --moderator-cyan: 187 85% 70%;
-    --neutral-gray: 0 0% 85%;
+    /* Glassmorphism */
+    --glass-bg: rgba(10, 10, 10, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: 12px;
 
-    --gradient-hero: linear-gradient(135deg, hsl(220 25% 10%), hsl(220 30% 15%));
-    --gradient-card: linear-gradient(180deg, hsl(220 20% 14%), hsl(220 18% 12%));
-    --glow-cyan: 0 0 40px hsla(187, 85%, 70%, 0.3);
-    --glow-strong: 0 0 60px hsla(187, 85%, 70%, 0.5);
+    /* Glow Effects */
+    --glow-white: 0 0 30px rgba(255, 255, 255, 0.1);
+    --glow-hover: 0 0 40px rgba(255, 255, 255, 0.15);
   }
 }
 
@@ -54,7 +54,81 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Card */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Hover Glow Effect */
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    box-shadow: var(--glow-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Fade In Animation */
+  .fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .fade-in-delay-1 {
+    animation: fadeIn 0.6s ease-out 0.1s forwards;
+    opacity: 0;
+  }
+
+  .fade-in-delay-2 {
+    animation: fadeIn 0.6s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+
+  .fade-in-delay-3 {
+    animation: fadeIn 0.6s ease-out 0.3s forwards;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
   }
 }
