@@ -16,9 +16,10 @@ interface ServerData {
 interface ServerStatusProps {
   serverAddress: string;
   showCopyButton?: boolean;
+  compact?: boolean;
 }
 
-export const ServerStatus = ({ serverAddress, showCopyButton = true }: ServerStatusProps) => {
+export const ServerStatus = ({ serverAddress, showCopyButton = true, compact = false }: ServerStatusProps) => {
   const [serverData, setServerData] = useState<ServerData | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -84,6 +85,15 @@ export const ServerStatus = ({ serverAddress, showCopyButton = true }: ServerSta
   }
 
   const isOnline = serverData?.online;
+
+  // Compact mode - just show player count inline
+  if (compact) {
+    return (
+      <span className="text-sm text-muted-foreground">
+        {isOnline && serverData ? `• ${serverData.players.online} çevrimiçi` : ""}
+      </span>
+    );
+  }
 
   return (
     <div className="glass-card rounded-lg p-4">

@@ -48,8 +48,6 @@ export const Navbar = () => {
 
   const navLinks = [
     { to: "/", label: "Anasayfa" },
-    { to: "/duels", label: "Düellolar" },
-    { to: "/players", label: "Oyuncular" },
   ];
 
   return (
